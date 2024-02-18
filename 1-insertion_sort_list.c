@@ -9,7 +9,7 @@
 void insertion_sort_list(listint_t **list)
 {
 	listint_t *temp, *curr;
-	int i, n, k = 1;
+	int i, n, k = 0;
 
 	curr = *list;
 	temp = NULL;
@@ -17,7 +17,7 @@ void insertion_sort_list(listint_t **list)
 	{
 		n = curr->n;
 		i = 0;
-		temp = curr->next;
+		temp = *list;
 		while (i < k)
 		{
 			if (n < temp->n)
