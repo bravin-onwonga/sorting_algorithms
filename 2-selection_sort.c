@@ -1,5 +1,12 @@
 #include "sort.h"
 
+/**
+ * selection_sort - algorithm similar to selection sort
+ *
+ * @array: int array to sort
+ * @size: size of the array
+ */
+
 void selection_sort(int *array, size_t size)
 {
 	unsigned int i = 0, k, idx;
@@ -25,5 +32,4 @@ void selection_sort(int *array, size_t size)
 			print_array(array, size);
 		}
 	}
-	print_array(array, size);
 }
