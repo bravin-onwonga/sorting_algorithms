@@ -1,5 +1,7 @@
 #include "sort.h"
 
+void swap_nodes(listint_t *curr, listint_t *prev);
+
 /**
  * insertion_sort_list - sort a list with the insertion sort algorithm
  *
@@ -8,33 +10,52 @@
 
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *temp, *curr;
-	int i, n, k = 0;
+	listint_t *curr, *hold, *temp;
+	int n;
 
 	curr = *list;
-	temp = NULL;
 	while (curr)
 	{
 		n = curr->n;
-		i = 0;
-		temp = *list;
-		while (i < k)
+		hold = curr->next;
+		if (curr->prev)
 		{
-			if (n < temp->n)
+			if (n < curr->prev->n)
 			{
-				curr->prev->next = curr->next;
-				curr->prev = temp->prev;
-				curr->prev->next = curr;
-				temp->prev = curr;
-				curr->next = temp;
-				print_list(*list);
-				break;
+				while (curr->n < curr->prev->n)
+				{
+					temp = curr;
+					swap_nodes(curr, curr->prev);
+					if (curr->prev == NULL)
+					{
+						*list = curr;
+						print_list(*list);
+						break;
+					}
+					print_list(*list);
+					curr = temp;
+				}
 			}
-			i++;
-			temp = temp->next;
 		}
-		k++;
-		curr = curr->next;
+		curr = hold;
 	}
-	print_list(*list);
+}
+
+/**
+ * swap_nodes - swaps two nodes
+ *
+ * @curr: current node
+ * @prev: node before curr to swap with
+ */
+
+void swap_nodes(listint_t *curr, listint_t *prev)
+{
+	prev->next = curr->next;
+	if (curr->next)
+		curr->next->prev = prev;
+	curr->prev = prev->prev;
+	if (curr->prev != NULL)
+		curr->prev->next = curr;
+	prev->prev = curr;
+	curr->next = prev;
 }
