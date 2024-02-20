@@ -26,8 +26,6 @@ void insertion_sort_list(listint_t **list)
 			if (curr->prev == NULL)
 			{
 				*list = curr;
-				print_list(*list);
-				break;
 			}
 			print_list(*list);
 		}
