@@ -27,9 +27,9 @@ void quick_sort(int *array, size_t size)
 
 void sort_everything(int *array, int start, int stop, size_t size)
 {
-	unsigned int idx;
+	int idx;
 
-	if (start < stop)
+	if (start <= stop)
 	{
 		idx = partition_array(array, start, stop);
 		print_array(array, size);
