@@ -1,5 +1,12 @@
 #include "sort.h"
 
+/**
+ * shell_sort - function similar to shell sort
+ *
+ * @array: array to sort
+ * @size: size of array
+ */
+
 void shell_sort(int *array, size_t size)
 {
 	unsigned int gap = 1, j, k;
@@ -17,7 +24,7 @@ void shell_sort(int *array, size_t size)
 			n = array[k];
 			j = k;
 
-			while (j < gap - 1 && array[j - gap] >= n)
+			while (j > gap - 1 && array[j - gap] >= n)
 			{
 				array[j] = array[j - gap];
 				j = j - gap;
