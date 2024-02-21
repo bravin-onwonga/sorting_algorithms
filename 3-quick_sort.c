@@ -1,71 +1,69 @@
 #include "sort.h"
 
-void quick_sort(int *array, size_t size);
-void sort_everything(int *array, int start, int stop, size_t size);
-int partition_array(int *array, int start, int stop);
-
-/**
- * quick_sort - function similar to quick sort
- *
- * @array: array to sort
- * @size: size of array
- */
+void sort_everything(int *array, unsigned int start, unsigned int stop, size_t size, unsigned int left_limit, unsigned int right_limit);
+unsigned int partition_array(int *array, unsigned int start, unsigned int stop);
 
 void quick_sort(int *array, size_t size)
 {
-	sort_everything(array, 0, size - 1, size);
+	unsigned int n, left_limit = 0, right_limit = size - 1;
+
+	/* left side is 0 - idx */
+	n = size - 1;
+	sort_everything(array, 0, n, size, left_limit, right_limit);
 }
 
-/**
- * sort_everything - sorts the array
- *
- * @array: array to sort
- * @start: where to begin the sorting
- * @stop: where to end the sorting
- * @size: size of the array
- */
-
-void sort_everything(int *array, int start, int stop, size_t size)
+void sort_everything(int *array, unsigned int start, unsigned int stop, size_t size, unsigned int left_limit, unsigned int right_limit)
 {
-	int idx;
+	unsigned int idx;
+	/* printf("Start: %d, Stop: %d, Size: %ld\n", start, stop, size); */
 
-	if (start <= stop)
+	if (right_limit == left_limit)
+	{
+		return;
+	}
+
+	if (start < stop)
 	{
 		idx = partition_array(array, start, stop);
 		print_array(array, size);
-		sort_everything(array, start, idx - 1, size);
-		sort_everything(array, idx + 1, stop, size);
+		if (idx == left_limit)
+		{
+			left_limit++;
+			sort_everything(array, idx + 1, right_limit, size, left_limit, right_limit);
+		}
+		if (idx == right_limit)
+		{
+			right_limit--;
+			sort_everything(array, left_limit, idx - 1, size, left_limit, right_limit);
+		}
+
+		sort_everything(array, left_limit, idx - 1, size, left_limit, right_limit);
+		sort_everything(array, idx + 1, right_limit, size, left_limit, right_limit);
 	}
 }
 
-/**
- * partition_array - sorts the array
- *
- * @array: array to sort
- * @start: where to begin the sorting
- * @stop: where to end the sorting
- * Return: index of pivot
- */
-
-int partition_array(int *array, int start, int stop)
+unsigned int partition_array(int *array, unsigned int start, unsigned int stop)
 {
-	int pivot = array[stop], temp;
-	int i = start - 1, j;
+	int temp, pivot = array[stop];
+	unsigned int idx = stop, i;
 
-	for (j = start; j < stop; j++)
+	for (i = start; i <= stop; i++)
 	{
-		if (array[j] < pivot)
+		if ((array[i] > pivot) && (i < idx))
 		{
-			i++;
 			temp = array[i];
-			array[i] = array[j];
-			array[j] = temp;
+			array[i] = pivot;
+			array[idx] = temp;
+			idx = i;
+		}
+
+		if ((array[i] < pivot) && (i > idx))
+		{
+			temp = array[i];
+			array[i] = pivot;
+			array[idx] = temp;
+			idx = i;
 		}
 	}
-
-	temp = array[i + 1];
-	array[i + 1] = array[stop];
-	array[stop] = temp;
-
-	return (i + 1);
+	return (idx);
 }
